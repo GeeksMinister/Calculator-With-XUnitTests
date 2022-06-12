@@ -20,4 +20,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Labb3_XUnit.Console\Labb3_XUnit.Console.csproj" />
+  </ItemGroup>
+
 </Project>

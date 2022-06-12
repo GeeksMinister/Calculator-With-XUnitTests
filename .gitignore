@@ -5,3 +5,6 @@
 /Labb3_XUnit/obj
 /.vs
 /Labb3_XUnit/bin/Debug/net6.0
+/Labb3_XUnit.Console/obj
+/Labb3_XUnit.Console/bin/Debug/net6.0
+/Labb3_XUnit/bin/Release/net6.0

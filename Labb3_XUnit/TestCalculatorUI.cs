@@ -1,7 +1,6 @@
-﻿namespace Labb3_XUnit;
-
-public class TestCalculatorUI
+﻿public class TestCalculatorUI
 {
+
     [Theory]
     [InlineData("+", "22", "11")]
     [InlineData("-", "4.5", "45")]
@@ -18,35 +17,38 @@ public class TestCalculatorUI
         Assert.Equal(decimal.Parse(value1), actualValue1);
         Assert.Equal(decimal.Parse(value2), actualValue2);
     }
-}
 
-public class CalculatorUI
-{
-#pragma warning disable CS8602
-    public static (char mathOperator, decimal value1, decimal value2) BasicCalculationInput()
+
+
+    private Dictionary<string, decimal?> GetSampleHistory()
     {
-        char[] validOperators = "+-*/%".ToCharArray();
-        char mathOperator = ' ';
-        decimal value1;
-        decimal value2;
-
-        while (!validOperators.Contains(mathOperator))
+        return new Dictionary<string, decimal?>()
         {
-            Write("\n\n\tType in an operator [ + ] [ - ] [ * ] [ / ] [ % ]:  ");
-            mathOperator = ReadLine().Trim()[0];
-        }
-
-        Write("\n\n\tType in the first value: ");
-        while (!decimal.TryParse(ReadLine().Trim(), out value1))
-        {
-            Write("\n\n\tType in the first value: ");
-        }
-
-        Write("\n\n\tType in the second value: ");
-        while (!decimal.TryParse(ReadLine().Trim(), out value2))
-        {
-            Write("\n\n\tType in the second value: ");
-        }
-        return (mathOperator, value1, value2);
+            [@"13+8-7*2/73"] = 20.808219178082191780821917808219m,
+            [@"82+2-1*2/20"] = 83.9m,
+            [@"15+8-7*2/41"] = 22.658536585365853658536585365854m,
+            [@"55+8-7*2/55"] = 62.745454545454545454545454545455m,
+            [@"13+8-7*2/29"] = 20.517241379310344827586206896552m,
+        };
     }
+
+    [Theory]
+    [InlineData(@"15+8-7*2/41")]
+    [InlineData(@"82+2-1*2/20")]
+    [InlineData(@"13+8-7*2/73")]
+    [InlineData(@"55+8-7*2/55")]
+    [InlineData(@"7+1-4*2+903")]
+    public void LoadHistoryCalculations_ReturnReusableValue(string expression)
+    {
+        CalculatorUI.HistoryCalculations = GetSampleHistory();
+
+        foreach (var item in CalculatorUI.HistoryCalculations)
+        {
+            var result = new DataTable().Compute(item.Value + expression, "").ToString();
+            Assert.True(decimal.TryParse(result, out decimal actual));
+        }
+
+
+    }
+
 }

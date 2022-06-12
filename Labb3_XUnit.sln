@@ -5,6 +5,8 @@ VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Labb3_XUnit", "Labb3_XUnit\Labb3_XUnit.csproj", "{D2ECDD91-DFA6-4CBA-91E9-BAB9F6D08813}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Labb3_XUnit.Console", "Labb3_XUnit.Console\Labb3_XUnit.Console.csproj", "{F3A5C2D9-FFB0-4F58-B69A-ED20A4EC0F4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D2ECDD91-DFA6-4CBA-91E9-BAB9F6D08813}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2ECDD91-DFA6-4CBA-91E9-BAB9F6D08813}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2ECDD91-DFA6-4CBA-91E9-BAB9F6D08813}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3A5C2D9-FFB0-4F58-B69A-ED20A4EC0F4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A5C2D9-FFB0-4F58-B69A-ED20A4EC0F4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A5C2D9-FFB0-4F58-B69A-ED20A4EC0F4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A5C2D9-FFB0-4F58-B69A-ED20A4EC0F4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

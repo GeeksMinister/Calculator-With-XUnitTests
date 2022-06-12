@@ -1,8 +1,9 @@
-namespace Labb3_XUnit;
-
 public class TestCalculator
 {
+#pragma warning disable CS8604
+
     [Theory]
+    [InlineData('/', "22", "0", 0)]
     [InlineData('+', "22", "11", 22 + 11)]
     [InlineData('-', "22", "11", 22 - 11)]
     [InlineData('*', "22", "11", 22 * 11)]
@@ -27,27 +28,30 @@ public class TestCalculator
         Calculator.BasicCalculation(mathOperator, decimal.Parse(value1), decimal.Parse(value2)));
     }
 
-
-
-
-
-}
-
-
-public static class Calculator
-{
-    public static decimal BasicCalculation(char mathOperator, decimal value1, decimal value2)
+    [Theory]
+    [InlineData(@"15+8-7*2/41")]
+    [InlineData(@"82+2-1*2/20")]
+    [InlineData(@"13+8-7*2/73")]
+    [InlineData(@"55+8-7*2/55")]
+    [InlineData(@"7+1-4*2/90")]
+    public void MathExpressionInput_ReturnValidResult(string expression)
     {
-        switch (mathOperator)
-        {
-            case '+': return value1 + value2;
-            case '-': return value1 - value2;
-            case '*': return value1 * value2;
-            case '/': return value1 / value2;
-            case '%': return value1 % value2;
-            default:
-                throw new ArgumentException();
-        }
+        var actual = Calculator.ComputeMathExpression(expression);
+        var expected = decimal.Parse(new DataTable().Compute(expression, "").ToString());
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData(@"+15+")]
+    [InlineData(@"44**3")]
+    [InlineData(@"10//")]
+    [InlineData(@"4ddd2")]
+    [InlineData(@"Invalid")]
+    public void MathExpressionInput_ReturnNull(string expression)
+    {
+        var actual = Calculator.ComputeMathExpression(expression);
+
+        Assert.Null(actual);
     }
 
 

@@ -5,3 +5,4 @@ global using Xunit;
 global using System.IO;
 global using static System.Console;
 global using System.Text;
+global using System.Data;
