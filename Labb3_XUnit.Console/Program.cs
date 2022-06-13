@@ -1,3 +1,2 @@
-﻿
-CalculatorUI.PrintMenu();
+﻿CalculatorUI.PrintMenu();
 

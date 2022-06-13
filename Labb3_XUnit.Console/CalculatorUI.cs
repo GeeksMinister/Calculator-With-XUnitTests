@@ -57,19 +57,29 @@ public class CalculatorUI
         ReadLine();
     }
 
-    public static (char mathOperator, decimal value1, decimal value2) BasicCalculationInput()
+    public static (char? mathOperator, decimal? value1, decimal? value2) BasicCalculationInput()
     {
         char[] validOperators = { '+', '-', '*', '/', '%' };
         char mathOperator = ' ';
         decimal value1;
         decimal value2;
         decimal result;
-
+        CancelButton();
         while (!validOperators.Contains(mathOperator))
         {
             Write("\n\n\tType in an operator [ + ] [ - ] [ * ] [ / ] [ % ]:  ");
-            mathOperator = ReadLine().Trim()[0];
+            string input = ReadLine().Trim().ToUpper();
+            if (input == "C")
+            {
+                return (null, null, null);
+            }
+            if (input != string.Empty)
+            {
+                mathOperator = input[0];
+            }
         }
+        try { Clear(); }
+        catch (IOException) { }
 
         Write("\n\n\tType in the first value: ");
         while (!decimal.TryParse(ReadLine().Trim(), out value1))
@@ -85,12 +95,30 @@ public class CalculatorUI
         result = Calculator.BasicCalculation(mathOperator, value1, value2);
 
         string expression = $"{value1} {mathOperator} {value2}";
-        Write($"\n\n\t{value1} {mathOperator} {value2} = {result}");
+        Write($"\n\n\t{value1} {mathOperator} {value2} = {result:#.##}");
         if (!HistoryCalculations.ContainsKey(expression))
         {
             HistoryCalculations.Add($"{value1} {mathOperator} {value2}", result);
         }
         return (mathOperator, value1, value2);
+    }
+
+    public static void MathExpressionInput()
+    {
+        decimal? result = null;
+        string expression = string.Empty;
+        CancelButton();
+        while (result is null)
+        {
+            Write("\n\n\tPlease type in a valid math expression:  ");
+            result = Calculator.ComputeMathExpression(expression = ReadLine().Trim());
+            if (expression.ToUpper() == "C") return;
+        }
+        Write($"\n\n\t{expression} = {result:#.##}");
+        if (!HistoryCalculations.ContainsKey(expression))
+        {
+            HistoryCalculations.Add($"{expression}", result);
+        }
     }
 
     public static void PrintHistoryCalculations()
@@ -100,29 +128,14 @@ public class CalculatorUI
             WriteLine($"\n\n\tThe history is Empty !");
             return;
         }
+        CancelButton();
         int count = 0;
         foreach (var item in HistoryCalculations)
         {
             count++;
-            Write($"\n\n\t[{count}]  {item.Key} = {item.Value}");
+            Write($"\n\n\t[{count}]  {item.Key:#.##} = {item.Value:#.##}");
         }
         SelectAndContinueCalculation(count);
-    }
-
-    public static void MathExpressionInput()
-    {
-        decimal? result = null;
-        string expression = string.Empty;
-        while (result is null)
-        {
-            Write("\n\n\tPlease type in a valid math expression:  ");
-            result = Calculator.ComputeMathExpression(expression = ReadLine().Trim());
-        }
-        Write($"\n\n\t{expression} = {result}");
-        if (!HistoryCalculations.ContainsKey(expression))
-        {
-            HistoryCalculations.Add($"{expression}", result);
-        }
     }
 
     public static void SelectAndContinueCalculation(int count)
@@ -131,9 +144,14 @@ public class CalculatorUI
         Write("\n\n\tSelect a value:  ");
         while (select > count || select <= 0)
         {
-            int.TryParse(ReadLine(), out select);
+            string? input;
+            int.TryParse(input = ReadLine(), out select);
+            if (input.Trim().ToUpper() == "C") return;
         }
-        string? historyValue = HistoryCalculations.ElementAt(select-1).Value.ToString();
+        try { Clear(); }
+        catch (IOException) { }
+
+        string? historyValue = HistoryCalculations.ElementAt(select - 1).Value.ToString();
         decimal? result = null;
         string expression = string.Empty;
         while (result is null)
@@ -142,15 +160,21 @@ public class CalculatorUI
             result = Calculator.ComputeMathExpression(historyValue + (expression = ReadLine().Trim()));
         }
         expression = historyValue + expression;
-        Write($"\n\n\t{expression} = {result}");
+        Write($"\n\n\t{expression} = {result:#.##}");
         if (!HistoryCalculations.ContainsKey(expression))
         {
             HistoryCalculations.Add($"{expression}", result);
         }
-
-
     }
 
-
-
+    public static void CancelButton()
+    {
+        try 
+        {
+            SetCursorPosition(60, 1);
+            Write("[Type in ' C ' to cancel]");
+        }
+        
+        catch (IOException) { }
+    }
 }
